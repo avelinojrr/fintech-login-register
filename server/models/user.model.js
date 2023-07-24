@@ -3,22 +3,24 @@ import mongoose from "mongoose";
 // define user schema
 const userSchema = new mongoose.Schema({
     username: {
-        username: String,
+        type: String,
         required: true,
         unique: true,
         trim: true,
     },
     email: {
-        email: String,
+        type: String,
         required: true,
         unique: true,
         trim: true,
 
     },
     password: {
-        password: String,
+        type: String,
         required: true
-    } 
+    }
+}, {
+    timestamps: true    
 });
 
 export default mongoose.model("User", userSchema);
