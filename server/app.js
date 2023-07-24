@@ -7,4 +7,4 @@ const app = express();
 // use morgan to log requests to the console
 app.use(morgan("dev"));
 
-export default app;
+export default app; // export app for testing purposes
