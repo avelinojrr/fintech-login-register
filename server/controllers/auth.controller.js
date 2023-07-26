@@ -90,17 +90,25 @@ export const logout = (req, res) => {
 };
 
 export const profile = async (req, res) => {
-    const userFound = await User.findById(req.user.id);
+    try {
+        const userFound = await User.findById(req.user.id);
 
-    if (!userFound) return res.status(400).json({
-        message: "User not found"
-    });
+        if (!userFound) return res.status(404).json({
+            message: "User not found"
+        });
 
-    return res.json({
-        id: userFound._id,
-        username: userFound.username,
-        email: userFound.email,
-        createdAt: userFound.createdAt,
-        udpatedAt: userFound.updatedAt,
-    });
+        const userDTO = {
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+            createdAt: userFound.createdAt,
+            udpatedAt: userFound.updatedAt,
+        }
+
+        return res.json(userDTO);
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
 }
