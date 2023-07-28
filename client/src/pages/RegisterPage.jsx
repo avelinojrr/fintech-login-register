@@ -1,8 +1,14 @@
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { registerRequest } from "../api/auth";
 
 function RegisterPage() {
 
     const { register, handleSubmit } = useForm();
+
+    const onSubmit = handleSubmit(async (values) => {
+        const response = await registerRequest(values);
+        console.log(response);
+    })
 
     return (
         <div>
@@ -20,9 +26,7 @@ function RegisterPage() {
                     </div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" onSubmit={handleSubmit ((values) => {
-                            console.log(values);
-                        })} >
+                        <form className="space-y-6" onSubmit={onSubmit}>
                             <div>
                                 <label
                                     htmlFor="email"
@@ -33,7 +37,7 @@ function RegisterPage() {
                                 <div className="mt-2">
                                     <input
                                         type="text"
-                                        {...register ("username", {required: true,})
+                                        {...register("username", { required: true, })
                                         }
                                         placeholder="Username"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -51,7 +55,7 @@ function RegisterPage() {
                                 <div className="mt-2">
                                     <input
                                         type="email"
-                                        {...register ("email", {required: true,})
+                                        {...register("email", { required: true, })
                                         }
                                         placeholder="name@company.com"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -71,7 +75,7 @@ function RegisterPage() {
                                 <div className="mt-2">
                                     <input
                                         type="password"
-                                        {...register ("password", {required: true,})
+                                        {...register("password", { required: true, })
                                         }
                                         placeholder="********"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -109,7 +113,7 @@ function RegisterPage() {
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
-                                    Register
+                                    Create an account
                                 </button>
                             </div>
                         </form>
