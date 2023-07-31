@@ -1,13 +1,24 @@
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: {
+        errors
+    } } = useForm();
+    const { signUp, isAuthenticated, errors: registerErrors } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [isAuthenticated, navigate])
 
     const onSubmit = handleSubmit(async (values) => {
-        const response = await registerRequest(values);
-        console.log(response);
+        signUp(values);
     })
 
     return (
@@ -26,6 +37,16 @@ function RegisterPage() {
                     </div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                        
+                        {
+                            registerErrors.map((error, index) => (
+
+                                <div className="rounded-md font-medium text-black bg-red-400 p-2 mb-3" key={index}>
+                                    {error}
+                                </div>
+                            ))
+                        }
+
                         <form className="space-y-6" onSubmit={onSubmit}>
                             <div>
                                 <label
@@ -42,6 +63,9 @@ function RegisterPage() {
                                         placeholder="Username"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
+                                    {
+                                        errors.username && <p className="text-red-500 py-1">* Username is required *</p>
+                                    }
                                 </div>
                             </div>
 
@@ -60,6 +84,9 @@ function RegisterPage() {
                                         placeholder="name@company.com"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
+                                    {
+                                        errors.email && <p className="text-red-500 py-1">* Email is required *</p>
+                                    }
                                 </div>
                             </div>
 
@@ -77,9 +104,12 @@ function RegisterPage() {
                                         type="password"
                                         {...register("password", { required: true, })
                                         }
-                                        placeholder="********"
+                                        placeholder="**********"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
+                                    {
+                                        errors.password && <p className="text-red-500 py-1">* Password is required *</p>
+                                    }
                                 </div>
 
                                 {/* create a checkbox por terms and conditions */}
