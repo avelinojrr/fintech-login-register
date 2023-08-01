@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
@@ -150,12 +150,12 @@ function RegisterPage() {
 
                         <p className="mt-10 text-center text-sm text-gray-500">
                             Already have an account?{" "}
-                            <a
-                                href="#"
+                            <Link
+                                to="/login"
                                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             >
                                 Login here
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

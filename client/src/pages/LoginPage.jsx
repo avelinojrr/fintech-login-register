@@ -1,8 +1,17 @@
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 function LoginPage() {
 
-const { handleSubmit } = useForm();
+    const { register, handleSubmit, formState: {
+        errors
+    } } = useForm();
 
+    const {login, errors: LoginErrors} = useAuth();
+
+    const onSubmit = handleSubmit(async (data) => {
+        login(data);
+    })
 
     return (
         <div>
@@ -20,9 +29,14 @@ const { handleSubmit } = useForm();
                     </div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-6" onSubmit={handleSubmit ((values) => {
-                            console.log(values);
-                        })} >
+                    {
+                            LoginErrors.map((error, index) => (
+                                <div className="rounded-md font-medium text-black bg-red-400 p-2 mb-3" key={index}>
+                                    {error}
+                                </div>
+                            ))
+                        }
+                        <form className="space-y-6" onSubmit={onSubmit} >
                             <div>
                                 <label
                                     htmlFor="email"
@@ -32,13 +46,15 @@ const { handleSubmit } = useForm();
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        id="username"
-                                        name="username"
                                         type="text"
-                                        autoComplete="username"
-                                        required
+                                        {...register("username", { required: true, })
+                                        }
+                                        placeholder="Username"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
+                                    {
+                                        errors.username && <p className=" font-semibold text-red-500 py-1">* Username is required *</p>
+                                    }
                                 </div>
                             </div>
 
@@ -61,13 +77,15 @@ const { handleSubmit } = useForm();
                                 </div>
                                 <div className="mt-2">
                                     <input
-                                        id="password"
-                                        name="password"
                                         type="password"
-                                        autoComplete="current-password"
-                                        required
+                                        {...register("password", { required: true, })
+                                        }
+                                        placeholder="**********"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
+                                    {
+                                        errors.password && <p className="font-semibold text-red-500 py-1">* Password is required *</p>
+                                    }
                                 </div>
                             </div>
 
@@ -76,24 +94,24 @@ const { handleSubmit } = useForm();
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
-                                    Sign in
+                                    Sign In
                                 </button>
                             </div>
                         </form>
 
                         <p className="mt-10 text-center text-sm text-gray-500">
                             Don’t have an account yet?{" "}
-                            <a
-                                href="#"
+                            <Link
+                                to="/register"
                                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             >
                                 Sign up
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     );
 }
