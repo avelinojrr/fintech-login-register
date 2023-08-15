@@ -16,6 +16,5 @@ app.use(cookieParser());
 
 // use routes
 app.use("/api", authRoutes);
-app.use("/api", formsRoutes);
 
 export default app; // export app for testing purposes
